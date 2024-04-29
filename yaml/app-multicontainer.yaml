@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-multicontainer
+  labels:
+    app: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: main-app
+        image: gcr.io/level-skyline-417610/demo:v1.1.0
+        ports:
+        - containerPort: 8080
+      - name: sidecar-nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: static-content
+          mountPath: /usr/share/nginx/html  # Mount path for serving static files
+      volumes:
+      - name: static-content
+        emptyDir: {}  # Shared volume for static content

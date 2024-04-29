@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-backup-job
+  labels:
+    app: database-backup
+spec:
+  template:
+    metadata:
+      labels:
+        app: database-backup
+    spec:
+      containers:
+      - name: db-backup
+        image: gcr.io/level-skyline-417610/demo:v1.1.0
+        command: ["sh", "-c", "echo 'Backing up database...' && my-backup-script.sh"]
+      restartPolicy: OnFailure  # Restarts only if the job fails

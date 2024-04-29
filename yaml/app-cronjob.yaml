@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello-world-cronjob
+  labels:
+    app: hello-world
+spec:
+  schedule: "*/5 * * * *"  # This schedule represents every 5 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello-world
+            image: bash
+            command: ["bash", "-c", "echo 'Hello world'"]
+          restartPolicy: OnFailure
